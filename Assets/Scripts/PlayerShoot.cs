@@ -70,7 +70,7 @@ public class PlayerShoot : MonoBehaviour
 
         cntText.text = enemys.Count.ToString();
 
-        if (Input.GetKeyDown(KeyCode.Mouse0) && !gunUsing)
+        if (Input.GetKeyDown(KeyCode.Mouse0) && ScoreManager.instance.curRifleBullet > 0 && !gunUsing)
         {
             gunUsing = true;
             StartCoroutine(ShootRifle());
@@ -82,7 +82,8 @@ public class PlayerShoot : MonoBehaviour
         StartCameraShake(5, 2);
         EffectManager.instance.effectSounds[0].source.Play();
 
-        Debug.Log(enemys.Count);
+        //Debug.Log(enemys.Count);
+        ScoreManager.instance.curRifleBullet--;
         ScoreManager.instance.GetScoreUI(enemys.Count * enemys.Count * 100);
         ScoreManager.instance.score += enemys.Count * enemys.Count * 100;
         for (int i = enemys.Count - 1; i >= 0; i--)

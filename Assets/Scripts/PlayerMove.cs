@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMove : MonoBehaviour
 {
     public float moveSpeed;
 
+    public Image rushUI;
     public float rushTime;
     public float rushCool;
     Coroutine rushCor;
@@ -48,11 +50,23 @@ public class PlayerMove : MonoBehaviour
 
     IEnumerator Rush()
     {
+        float tmp;
         moveSpeed *= 2;
-        yield return new WaitForSeconds(rushTime);
-        moveSpeed *= 0.5f;
-        yield return new WaitForSeconds(rushCool);
+        rushUI.fillMethod = Image.FillMethod.Vertical;
+        for (tmp = 0; tmp < rushTime; tmp += Time.deltaTime)
+        {
+            rushUI.fillAmount = (rushTime - tmp) / rushTime;
+            yield return null;
+        }
 
+        moveSpeed *= 0.5f;
+        rushUI.fillMethod = Image.FillMethod.Radial360;
+        for (tmp = 0; tmp < rushCool; tmp += Time.deltaTime)
+        {
+            rushUI.fillAmount = tmp / rushCool;
+            yield return null;
+        }
+        rushUI.fillAmount = 1;
         rushCor = null;
     }
 }

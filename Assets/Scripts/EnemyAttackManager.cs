@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemyAttackManager : MonoBehaviour
 {
+    public static EnemyAttackManager instance;
+
     public GameObject redDot;
     public Transform playerHeart;
 
@@ -13,10 +15,15 @@ public class EnemyAttackManager : MonoBehaviour
 
     Coroutine redDotCor;
 
+    private void Awake()
+    {
+        instance = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        redDotCor = StartCoroutine(BeforeRedDot());
     }
 
     // Update is called once per frame
@@ -26,6 +33,12 @@ public class EnemyAttackManager : MonoBehaviour
 
         if (redDotCor == null)
             redDotCor = StartCoroutine(RedDot());
+    }
+
+    public IEnumerator BeforeRedDot()
+    {
+        yield return new WaitForSeconds(3);
+        redDotCor = null;
     }
 
     public IEnumerator RedDot()

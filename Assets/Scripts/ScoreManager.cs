@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -18,6 +19,11 @@ public class ScoreManager : MonoBehaviour
     public BoxCollider2D rightWall;
     public bool gameOver;
 
+    public TextMeshProUGUI bulletUI;
+    public int maxRifleBullet;
+    public int curRifleBullet;
+    
+
     private void Awake()
     {
         instance = this;
@@ -32,6 +38,13 @@ public class ScoreManager : MonoBehaviour
     void Update()
     {
         totalScoreText.text = "Score: " + score.ToString();
+        bulletUI.text = curRifleBullet + " / " + maxRifleBullet;
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Restart();
+        }
+
     }
 
     public void GetScoreUI(int score)
@@ -50,5 +63,11 @@ public class ScoreManager : MonoBehaviour
         rightWall.enabled = false;
         PlayerShoot.instance.noise.m_AmplitudeGain = 0;
         PlayerShoot.instance.noise.m_FrequencyGain = 0;
+    }
+
+    public void Restart()
+    {
+        PlayerPrefs.SetInt("Restart", 1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
