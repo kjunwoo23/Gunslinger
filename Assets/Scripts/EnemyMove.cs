@@ -8,15 +8,19 @@ public class EnemyMove : MonoBehaviour
     public float moveSpeed;
     float reDirCnt;
 
+    public bool gotShot;
+
+    public Animator animator;
+
     //public bool aimIn;
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
         StartCoroutine(ToyRandMove(true));
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    public virtual void FixedUpdate()
     {
         if (ScoreManager.instance.gameOver)
         {
@@ -43,11 +47,29 @@ public class EnemyMove : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public virtual void Die()
     {
+        gotShot = true;
+        if (gameObject)
+            Destroy(gameObject);
+        else Debug.Log(1);
+    }
+
+    public virtual void OnCollisionStay2D(Collision2D collision)
+    {
+        //Debug.Log(1);
         if (collision.gameObject.CompareTag("Wall"))
         {
             reDirCnt = 0;
         }
+        if (collision.gameObject.GetComponent<EnemyTruck>())
+            if (collision.gameObject.GetComponent<EnemyTruck>().explode)
+            {
+                if (gotShot) return;
+                //Debug.Log(2);
+                ScoreManager.instance.GetScoreUI(100);
+                ScoreManager.instance.score += 100;
+                Die();
+            }
     }
 }

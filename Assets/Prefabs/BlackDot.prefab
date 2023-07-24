@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7836010675474386277}
   - component: {fileID: 151600510196595966}
   m_Layer: 0
-  m_Name: RedDot
+  m_Name: BlackDot
   m_TagString: RedDot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -99,10 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hit: 0
-  enemyHit: 0
-  isRed: 1
-  isBlack: 0
-  isGrey: 0
+  isBlack: 1
 --- !u!58 &151600510196595966
 CircleCollider2D:
   m_ObjectHideFlags: 0

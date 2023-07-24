@@ -20,8 +20,7 @@ public class ScoreManager : MonoBehaviour
     public bool gameOver;
 
     public TextMeshProUGUI bulletUI;
-    public int maxRifleBullet;
-    public int curRifleBullet;
+
     
 
     private void Awake()
@@ -38,7 +37,10 @@ public class ScoreManager : MonoBehaviour
     void Update()
     {
         totalScoreText.text = "Score: " + score.ToString();
-        bulletUI.text = curRifleBullet + " / " + maxRifleBullet;
+        if (PlayerShoot.instance.isRifle)
+            bulletUI.text = PlayerShoot.instance.curRifleBullet + " / " + PlayerShoot.instance.maxRifleBullet;
+        else
+            bulletUI.text = PlayerShoot.instance.curRevolverBullet + " / " + PlayerShoot.instance.maxRevolverBullet;
 
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -49,7 +51,7 @@ public class ScoreManager : MonoBehaviour
 
     public void GetScoreUI(int score)
     {
-        GameObject tmp = Instantiate(getScoreTextPrefab, PlayerShoot.instance.aim.transform.position, Quaternion.Euler(0, 0, 0));
+        GameObject tmp = Instantiate(getScoreTextPrefab, PlayerShoot.instance.aimPos.position, Quaternion.Euler(0, 0, 0));
         tmp.GetComponent<GetScoreUI>().text.text = "+" + score.ToString();
     }
 
