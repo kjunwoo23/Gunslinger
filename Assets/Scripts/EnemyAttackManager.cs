@@ -13,7 +13,7 @@ public class EnemyAttackManager : MonoBehaviour
     public float minCoolTime;
     public float maxCoolTime;
 
-    Coroutine redDotCor;
+    public Coroutine redDotCor;
 
     private void Awake()
     {
@@ -23,7 +23,7 @@ public class EnemyAttackManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        redDotCor = StartCoroutine(BeforeRedDot());
+        //redDotCor = StartCoroutine(BeforeRedDot());
     }
 
     // Update is called once per frame
@@ -31,8 +31,15 @@ public class EnemyAttackManager : MonoBehaviour
     {
         if (ScoreManager.instance.gameOver) return;
 
-        if (redDotCor == null)
+        if (!PhaseManager.instance.cutScenePlaying && redDotCor == null)
             redDotCor = StartCoroutine(RedDot());
+    }
+
+    public void Wait()
+    {
+        if (redDotCor != null) StopCoroutine(redDotCor);
+        if (GameObject.Find("RedDot(Clone)")) Destroy(GameObject.Find("RedDot(Clone)"));
+        redDotCor = StartCoroutine(BeforeRedDot());
     }
 
     public IEnumerator BeforeRedDot()
@@ -51,7 +58,7 @@ public class EnemyAttackManager : MonoBehaviour
 
 
         EffectManager.instance.effectSounds[3].source.Play();
-        if (tmp.GetComponent<RedDot>().hit)
+        if (tmp.GetComponent<RedDot>().hit && !PhaseManager.instance.cutScenePlaying)
             ScoreManager.instance.GameOver();
         Destroy(tmp);
         yield return new WaitForSeconds(Random.Range(minCoolTime, maxCoolTime));

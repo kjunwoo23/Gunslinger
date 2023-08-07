@@ -103,6 +103,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rigidBody: {fileID: 3189746675382203911}
   moveSpeed: 1
+  reverseSpeed: 50
+  gotShot: 0
   animator: {fileID: 2266315672635353185}
   greyDot: {fileID: 8518285063805702908, guid: 34573325e47e3754d89c354a5f58672e, type: 3}
   gatling: 0

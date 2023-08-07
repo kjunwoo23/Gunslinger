@@ -61,7 +61,7 @@ public class PlayerShoot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (ScoreManager.instance.gameOver)
+        if (ScoreManager.instance.gameOver || PhaseManager.instance.cutScenePlaying)
         {
             if (line.enabled)
             {
@@ -71,11 +71,30 @@ public class PlayerShoot : MonoBehaviour
                 //cntText.enabled = false;
                 //hitText.enabled = false;
             }
+            if (revolverAim.activeSelf)
+                revolverAim.SetActive(false);
             return;
         }
 
         clickPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         aimPos.position = clickPos + new Vector3(0, 0, 20);
+
+        if (curRifleBullet == 0 && !PhaseManager.instance.reverse)
+            if (CutSceneManager.instance.changePhaseCor == null)
+            {
+                CutSceneManager.instance.StartToPhase2();
+            }
+        if (curRevolverBullet == 0)
+            if (CutSceneManager.instance.changePhaseCor == null)
+            {
+                CutSceneManager.instance.StartToPhase3();
+            }
+        if (curRifleBullet == 0 && PhaseManager.instance.reverse)
+            if (CutSceneManager.instance.changePhaseCor == null)
+            {
+                CutSceneManager.instance.StartGameClear();
+            }
+
 
         if (isRifle)
         {
@@ -96,7 +115,6 @@ public class PlayerShoot : MonoBehaviour
         }
         else
         {
-            line.enabled = false;
             float tmpDistance = Vector2.Distance(gunPos.position, aimPos.position);
             revolverAim.transform.localScale = new Vector3(0.5f + tmpDistance * 0.5f, 0.5f + tmpDistance * 0.5f, 1);
             //원 범위의 랜덤한 곳에 raycast를 쏘고, 적 히트박스에 맞으면 제거
@@ -118,8 +136,15 @@ public class PlayerShoot : MonoBehaviour
         ScoreManager.instance.GetScoreUI(enemys.Count * enemys.Count * 100);
         ScoreManager.instance.score += enemys.Count * enemys.Count * 100;
         for (int i = enemys.Count - 1; i >= 0; i--)
-            if (enemys[i].gameObject)
-                enemys[i].Die();
+            try
+            {
+                if (enemys[i].enabled)
+                    enemys[i].Die();
+            }
+            catch
+            {
+                Debug.Log("error");
+            }
         enemys.Clear();
 
         yield return new WaitForSeconds(0.7f);

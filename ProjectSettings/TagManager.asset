@@ -11,6 +11,8 @@ TagManager:
   - Truck
   - Gatling
   - Enemy
+  - LeftWall
+  - RightWall
   layers:
   - Default
   - TransparentFX

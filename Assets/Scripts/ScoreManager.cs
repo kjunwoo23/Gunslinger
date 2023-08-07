@@ -8,6 +8,7 @@ public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager instance;
     public int score;
+    public int[] phaseScore = new int[3];
 
     public TextMeshProUGUI totalScoreText;
     public GameObject getScoreTextPrefab;
@@ -57,6 +58,7 @@ public class ScoreManager : MonoBehaviour
 
     public void GameOver()
     {
+        if (CutSceneManager.instance.changePhaseCor != null) return;
         if (gameOver) return;
         gameOver = true;
         PlayerShoot.instance.StartCameraShake(7, 7);
@@ -69,6 +71,7 @@ public class ScoreManager : MonoBehaviour
 
     public void Restart()
     {
+        PlayerPrefs.SetFloat("BgmTime", SoundManager.instance.bgmPlayer.time);
         PlayerPrefs.SetInt("Restart", 1);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }

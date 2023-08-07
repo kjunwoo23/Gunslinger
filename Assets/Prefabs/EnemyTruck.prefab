@@ -161,6 +161,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rigidBody: {fileID: 9149673104854222989}
   moveSpeed: 1
+  reverseSpeed: 50
+  gotShot: 0
   animator: {fileID: 5842606594158502293}
   explode: 0
   explodeSpeed: 20

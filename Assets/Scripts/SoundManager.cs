@@ -23,9 +23,11 @@ public class SoundManager : MonoBehaviour
             if (PlayerPrefs.GetInt("Restart") == 1)
             {
                 PlayerPrefs.SetInt("Restart", 0);
-                Destroy(gameObject);
+                bgmPlayer.time = PlayerPrefs.GetFloat("BgmTime");
+                //Destroy(gameObject);
             }
         instance = this;
+        //bgmPlayer = GetComponent<AudioSource>();
         /*if (PlayerPrefs.HasKey("SoundVolume"))
         {
             bgmPlayer.volume = PlayerPrefs.GetFloat("SoundVolume");
@@ -41,8 +43,9 @@ public class SoundManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        DontDestroyOnLoad(gameObject);
-        
+        //DontDestroyOnLoad(gameObject);
+        if (CutSceneManager.instance.videoPlayer.enabled) bgmPlayer.Pause();
+        else if (!bgmPlayer.isPlaying) bgmPlayer.Play();
     }
     public void SetBgmVolume(Slider slider)
     {
@@ -52,5 +55,9 @@ public class SoundManager : MonoBehaviour
         //text.text = value.ToString();
         //if (bgmPlayer.clip == bgmSounds[3].clip)
         //bgmPlayer.volume = slider.value * 0.5f;
+    }
+    public void MoveTime(float t)
+    {
+        bgmPlayer.time = t;
     }
 }

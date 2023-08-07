@@ -161,6 +161,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rigidBody: {fileID: 9197367052081840215}
   moveSpeed: 1
+  reverseSpeed: 50
+  gotShot: 0
   animator: {fileID: 0}
 --- !u!61 &6147879313025516732
 BoxCollider2D:
