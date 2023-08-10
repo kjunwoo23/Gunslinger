@@ -34,8 +34,8 @@ public class PlayerShoot : MonoBehaviour
     public CinemachineVirtualCamera cam;
     public CinemachineBasicMultiChannelPerlin noise;
     public Transform camTarget;
-    Coroutine cameraShakeCor;
-    Coroutine constantCameraShakeCor;
+    public Coroutine cameraShakeCor;
+    public Coroutine constantCameraShakeCor;
 
     public TextMeshProUGUI cntText;
     public TextMeshProUGUI hitText;
@@ -75,6 +75,8 @@ public class PlayerShoot : MonoBehaviour
                 revolverAim.SetActive(false);
             return;
         }
+
+        if (Time.timeScale == 0) return;
 
         clickPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         aimPos.position = clickPos + new Vector3(0, 0, 20);
@@ -213,6 +215,11 @@ public class PlayerShoot : MonoBehaviour
     {
         while (true)
         {
+            if (ScoreManager.instance.gameOver)
+            {
+                constantCameraShakeCor = null;
+                yield break;
+            }
             StartCameraShake(strength, 1);
             yield return new WaitForSeconds(rate);
         }

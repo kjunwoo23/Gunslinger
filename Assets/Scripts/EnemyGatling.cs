@@ -58,7 +58,10 @@ public class EnemyGatling : EnemyMove
 
     IEnumerator DisappearGrey(GameObject grey)
     {
-        yield return new WaitForSeconds(0.5f);
+        if (PhaseManager.instance.reverse)
+            yield return new WaitForSeconds(0.1f);
+        else
+            yield return new WaitForSeconds(0.5f);
         Destroy(grey);
     }
 }

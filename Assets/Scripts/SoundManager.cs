@@ -28,13 +28,13 @@ public class SoundManager : MonoBehaviour
             }
         instance = this;
         //bgmPlayer = GetComponent<AudioSource>();
-        /*if (PlayerPrefs.HasKey("SoundVolume"))
+        if (PlayerPrefs.HasKey("SoundVolume"))
         {
             bgmPlayer.volume = PlayerPrefs.GetFloat("SoundVolume");
             slider.value = bgmPlayer.volume;
         }
         else
-            bgmPlayer.volume = 0.5f;*/
+            bgmPlayer.volume = 0.5f;
         //bgmPlayer.clip = bgmSounds[1].clip;
         //bgmPlayer.Play();
         //text.text = bgmPlayer.volume.ToString();

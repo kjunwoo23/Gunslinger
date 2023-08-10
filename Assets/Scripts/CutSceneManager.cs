@@ -70,15 +70,16 @@ public class CutSceneManager : MonoBehaviour
     {
         //yield return new WaitForSeconds(2);
         cutSceneUIAnimator.SetBool("appear", true);
-        float t = 46.5f;
+        //float t = 46.5f;
         PhaseManager.instance.cutScenePlaying = true;
         inGameUI.SetActive(false);
-        skipUI.SetActive(true);
         videoPlayer.enabled = true;
         videoPlayer.clip = clips[0].clip;
         videoPlayer.Play();
-        while (t > 0) {
-            if (videoPlayer.time > 23f)
+        yield return new WaitForSeconds(1.5f);
+        skipUI.SetActive(true);
+        while (videoPlayer.isPlaying) {
+            /*if (videoPlayer.time > 23f)
                 texts[2].enabled = false;
             else if (videoPlayer.time > 17f)
                 texts[2].enabled = true;
@@ -91,15 +92,15 @@ public class CutSceneManager : MonoBehaviour
             {
                 texts[0].enabled = true;
                 texts[1].enabled = true;
-            }
+            }*/
             if (Input.GetKey(KeyCode.Escape)) break;
-            t -= Time.deltaTime;
+            //t -= Time.deltaTime;
             yield return null;
         }
         texts[0].enabled = false;
         texts[1].enabled = false;
         texts[2].enabled = false;
-        SoundManager.instance.MoveTime(47.2f);
+        SoundManager.instance.MoveTime(183.5f);
         videoPlayer.enabled = false;
         skipUI.SetActive(false);
         inGameUI.SetActive(true);
@@ -114,17 +115,18 @@ public class CutSceneManager : MonoBehaviour
         inGameUI.SetActive(false);
         cutSceneUIAnimator.SetBool("appear", true);
         yield return new WaitForSeconds(2);
-        float t = 14.3f;
+        //float t = 14.3f;
         PhaseManager.instance.cutScenePlaying = true;
-        skipUI.SetActive(true);
         PlayerShoot.instance.curRifleBullet--;
         videoPlayer.enabled = true;
         videoPlayer.clip = clips[1].clip;
         videoPlayer.Play();
-        while (t > 0)
+        yield return new WaitForSeconds(3);
+        skipUI.SetActive(true);
+        while (videoPlayer.isPlaying)
         {
             if (Input.GetKey(KeyCode.Escape)) break;
-            t -= Time.deltaTime;
+            //t -= Time.deltaTime;
             yield return null;
         }
         ScoreManager.instance.phaseScore[0] = ScoreManager.instance.score;
@@ -143,17 +145,18 @@ public class CutSceneManager : MonoBehaviour
         inGameUI.SetActive(false);
         cutSceneUIAnimator.SetBool("appear", true);
         yield return new WaitForSeconds(2);
-        float t = 36.3f;
+        //float t = 36.3f;
         PhaseManager.instance.cutScenePlaying = true;
-        skipUI.SetActive(true);
         PlayerShoot.instance.curRevolverBullet--;
         videoPlayer.enabled = true;
         videoPlayer.clip = clips[2].clip;
         videoPlayer.Play();
-        while (t > 0)
+        yield return new WaitForSeconds(3);
+        skipUI.SetActive(true);
+        while (videoPlayer.isPlaying)
         {
             if (Input.GetKey(KeyCode.Escape)) break;
-            t -= Time.deltaTime;
+            //t -= Time.deltaTime;
             yield return null;
         }
         ScoreManager.instance.phaseScore[1] = ScoreManager.instance.score - ScoreManager.instance.phaseScore[0];
@@ -172,25 +175,39 @@ public class CutSceneManager : MonoBehaviour
         inGameUI.SetActive(false);
         cutSceneUIAnimator.SetBool("appear", true);
         yield return new WaitForSeconds(2);
-        float t = 0;
+        //float t = 0;
         PhaseManager.instance.cutScenePlaying = true;
         //skipUI.SetActive(true);
         videoPlayer.enabled = true;
         videoPlayer.clip = clips[3].clip;
         videoPlayer.Play();
         ScoreManager.instance.phaseScore[2] = ScoreManager.instance.score - ScoreManager.instance.phaseScore[0] - ScoreManager.instance.phaseScore[1];
-        while (t >= 0)
+
+        if (PlayerPrefs.HasKey("Highscore"))
         {
-            if (t > 20.58f)
+            if (PlayerPrefs.GetInt("Highscore") < ScoreManager.instance.score)
+                PlayerPrefs.SetInt("Highscore", ScoreManager.instance.score);
+        }
+        else
+            PlayerPrefs.SetInt("Highscore", ScoreManager.instance.score);
+
+        if (PlayerPrefs.HasKey("Played"))
+            PlayerPrefs.SetInt("Played", PlayerPrefs.GetInt("Played") + 1);
+        else
+            PlayerPrefs.SetInt("Played", 1);
+
+        while (PhaseManager.instance.cutScenePlaying)
+        {
+            if (videoPlayer.time > 20.58f)
                 phaseScoreUI.text = "Total Score\n" + ScoreManager.instance.score.ToString();
-            else if (t > 18.13f)
+            else if (videoPlayer.time > 18.13f)
                 phaseScoreUI.text = "Phase 3\n" + ScoreManager.instance.phaseScore[2].ToString();
-            else if (t > 15.33f)
+            else if (videoPlayer.time > 15.33f)
                 phaseScoreUI.text = "Phase 2\n" + ScoreManager.instance.phaseScore[1].ToString();
-            else if (t > 12.56f)
+            else if (videoPlayer.time > 12.56f)
                 phaseScoreUI.text = "Phase 1\n" + ScoreManager.instance.phaseScore[0].ToString();
             //if (Input.GetKey(KeyCode.Escape)) break;
-            t += Time.deltaTime;
+            //t += Time.deltaTime;
             //Debug.Log(videoPlayer.time);
             yield return null;
         }

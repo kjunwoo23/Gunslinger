@@ -24,16 +24,16 @@ public class EffectManager : MonoBehaviour
         instance = this;
 
         float tmp = 0.5f;
-        /*if (PlayerPrefs.HasKey("EffectVolume"))
+        if (PlayerPrefs.HasKey("EffectVolume"))
         {
-            //Debug.Log(PlayerPrefs.GetFloat("EffectVolume"));
-            //tmp = 0.5f;
+            Debug.Log(PlayerPrefs.GetFloat("EffectVolume"));
+            tmp = 0.5f;
             tmp = PlayerPrefs.GetFloat("EffectVolume");
             //slider.value = tmp;
         }
         else
             tmp = 0.5f;
-        */
+        
         for (int i = 0; i < effectSounds.Length; i++)
         {
             effectSounds[i].source = gameObject.AddComponent<AudioSource>();
@@ -44,6 +44,8 @@ public class EffectManager : MonoBehaviour
             if (i == 2 || i == 3)
                 effectSounds[i].source.volume *= 0.5f;
         }
+
+        slider.value = tmp;
 
         //slider.value = tmp;
         //text.text = tmp.ToString();
@@ -63,15 +65,23 @@ public class EffectManager : MonoBehaviour
             
             PlayerPrefs.SetFloat("EffectVolume", value);
             //text.text = value.ToString();
+            if (i == 2 || i == 3)
+                effectSounds[i].source.volume *= 0.5f;
         }
         if (Time.timeScale == 0f)
-            effectSounds[1].source.Play();
+            if (!effectSounds[1].source.isPlaying)
+                effectSounds[1].source.Play();
     }
 
     public void MuteAll()
     {
         for (int i = 0; i < effectSounds.Length; i++)
             effectSounds[i].source.mute = true;
+    }
+    public void UnMuteAll()
+    {
+        for (int i = 0; i < effectSounds.Length; i++)
+            effectSounds[i].source.mute = false;
     }
     public void MuteAll(int idx)
     {

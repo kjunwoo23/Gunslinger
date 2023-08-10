@@ -34,6 +34,9 @@ public class PhaseManager : MonoBehaviour
             ChangeToPhase2();
         if (Input.GetKeyDown(KeyCode.Alpha3))
             ChangeToPhase3();*/
+        if (reverse)
+            if (PlayerShoot.instance.constantCameraShakeCor == null && PlayerShoot.instance.cameraShakeCor == null && !ScoreManager.instance.gameOver)
+                PlayerShoot.instance.StartConstantCameraShake(1, 0.3f);
     }
 
     public void ChangeToPhase1()
