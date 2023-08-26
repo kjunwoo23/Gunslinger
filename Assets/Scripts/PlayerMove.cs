@@ -7,6 +7,8 @@ public class PlayerMove : MonoBehaviour
 {
     public float moveSpeed;
 
+    public SpriteRenderer sprite;
+    public ParticleSystem particle;
     public Image rushUI;
     public float rushTime;
     public float rushCool;
@@ -23,8 +25,11 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        sprite.sortingOrder = (int)(-transform.position.y);
+        
         if (ScoreManager.instance.gameOver)
         {
+            particle.Stop();
             if (animator.enabled) animator.enabled = false;
             return;
         }

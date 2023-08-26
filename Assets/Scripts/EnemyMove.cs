@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyMove : MonoBehaviour
 {
+    public SpriteRenderer sprite;
     public Rigidbody2D rigidBody;
     public float moveSpeed;
     public float reverseSpeed;
@@ -13,6 +14,11 @@ public class EnemyMove : MonoBehaviour
 
     public Animator animator;
 
+    private void Awake()
+    {
+        animator.SetFloat("offset", Random.Range(0, 0.5f));
+    }
+
     //public bool aimIn;
     // Start is called before the first frame update
     public void Start()
@@ -21,6 +27,11 @@ public class EnemyMove : MonoBehaviour
             StartCoroutine(ToyRandMoveReverse(true));
         else
             StartCoroutine(ToyRandMove(true));
+    }
+
+    public void Update()
+    {
+        sprite.sortingOrder = (int)(-transform.position.y);
     }
 
     // Update is called once per frame
@@ -76,7 +87,7 @@ public class EnemyMove : MonoBehaviour
         if (PlayerShoot.instance.enemys.Contains(this))
         {
             PlayerShoot.instance.enemys.Remove(this);
-            Debug.Log(1);
+            //Debug.Log(1);
         }
         enabled = false;
         Destroy(gameObject);

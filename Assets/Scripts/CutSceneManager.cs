@@ -21,6 +21,8 @@ public class CutSceneManager : MonoBehaviour
 
     public TextMeshProUGUI[] texts;
 
+    public TextMeshProUGUI littleScore, littleRank, rank;
+    public Animator rankAnimator;
 
     private void Awake()
     {
@@ -35,7 +37,7 @@ public class CutSceneManager : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    {/*
         if (changePhaseCor == null)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -46,7 +48,7 @@ public class CutSceneManager : MonoBehaviour
                 StartToPhase3();
             if (Input.GetKeyDown(KeyCode.Alpha4))
                 StartGameClear();
-        }
+        }*/
     }
 
     public void StartToPhase1()
@@ -78,7 +80,7 @@ public class CutSceneManager : MonoBehaviour
         videoPlayer.Play();
         yield return new WaitForSeconds(1.5f);
         skipUI.SetActive(true);
-        while (videoPlayer.isPlaying) {
+        while (videoPlayer.time < 48 || videoPlayer.isPlaying) {
             /*if (videoPlayer.time > 23f)
                 texts[2].enabled = false;
             else if (videoPlayer.time > 17f)
@@ -123,7 +125,7 @@ public class CutSceneManager : MonoBehaviour
         videoPlayer.Play();
         yield return new WaitForSeconds(3);
         skipUI.SetActive(true);
-        while (videoPlayer.isPlaying)
+        while (videoPlayer.time < 13 || videoPlayer.isPlaying)
         {
             if (Input.GetKey(KeyCode.Escape)) break;
             //t -= Time.deltaTime;
@@ -153,7 +155,7 @@ public class CutSceneManager : MonoBehaviour
         videoPlayer.Play();
         yield return new WaitForSeconds(3);
         skipUI.SetActive(true);
-        while (videoPlayer.isPlaying)
+        while (videoPlayer.time < 35 || videoPlayer.isPlaying)
         {
             if (Input.GetKey(KeyCode.Escape)) break;
             //t -= Time.deltaTime;
@@ -171,6 +173,7 @@ public class CutSceneManager : MonoBehaviour
 
     public IEnumerator GameClear()
     {
+        ScoreManager.instance.rightWall.enabled = false;
         yield return new WaitForSeconds(3);
         inGameUI.SetActive(false);
         cutSceneUIAnimator.SetBool("appear", true);
@@ -198,7 +201,98 @@ public class CutSceneManager : MonoBehaviour
 
         while (PhaseManager.instance.cutScenePlaying)
         {
-            if (videoPlayer.time > 20.58f)
+            if (videoPlayer.time > 78f)
+                ESCManager.instance.OnClickToMenu();
+            else if (videoPlayer.time > 57f)
+            {
+                if (ScoreManager.instance.score < 20000)
+                    ESCManager.instance.OnClickToMenu();
+                else
+                {
+                    rankAnimator.gameObject.SetActive(false);
+                    rank.enabled = false;
+                    littleRank.enabled = false;
+                    littleScore.enabled = false;
+                }
+            }
+            else if (videoPlayer.time > 37.5f)
+            {
+                if (ScoreManager.instance.score >= 15000)
+                    rankAnimator.SetTrigger("S");
+                else if (ScoreManager.instance.score >= 8000)
+                    rankAnimator.SetTrigger("A");
+                else if (ScoreManager.instance.score >= 4000)
+                    rankAnimator.SetTrigger("B");
+                else if (ScoreManager.instance.score >= 2500)
+                    rankAnimator.SetTrigger("C");
+                else
+                    rankAnimator.SetTrigger("F");
+            }
+            else if (videoPlayer.time > 36f)
+            {
+                if (ScoreManager.instance.score >= 20000)
+                {
+                    rank.text = "S+";
+                    rank.color = Color.cyan;
+                }
+                else if (ScoreManager.instance.score >= 17500)
+                {
+                    rank.text = "S";
+                    rank.color = new Color(1, 0.5f, 0);
+                }
+                else if (ScoreManager.instance.score >= 15000)
+                {
+                    rank.text = "S-";
+                    rank.color = new Color(1, 0.5f, 0);
+                }
+                else if (ScoreManager.instance.score >= 13000)
+                {
+                    rank.text = "A+";
+                    rank.color = new Color(0.5f, 0, 1);
+                }
+                else if (ScoreManager.instance.score >= 10000)
+                {
+                    rank.text = "A";
+                    rank.color = new Color(0.5f, 0, 1);
+                }
+                else if (ScoreManager.instance.score >= 8000)
+                {
+                    rank.text = "A-";
+                    rank.color = new Color(0.5f, 0, 1);
+                }
+                else if (ScoreManager.instance.score >= 7000)
+                {
+                    rank.text = "B+";
+                    rank.color = Color.blue;
+                }
+                else if (ScoreManager.instance.score >= 5000)
+                {
+                    rank.text = "B";
+                    rank.color = Color.blue;
+                }
+                else if (ScoreManager.instance.score >= 4000)
+                {
+                    rank.text = "B-";
+                    rank.color = Color.blue;
+                }
+                else if (ScoreManager.instance.score >= 2500)
+                {
+                    rank.text = "C";
+                    rank.color = Color.green;
+                }
+                else
+                {
+                    rank.text = "F";
+                    rank.color = Color.gray;
+                }
+            }
+            else if (videoPlayer.time > 33f)
+                littleRank.text = "Rank:";
+            else if (videoPlayer.time > 32f)
+                littleScore.text = "Score:\n" + ScoreManager.instance.score.ToString();
+            else if (videoPlayer.time > 30f)
+                phaseScoreUI.enabled = false;
+            else if (videoPlayer.time > 20.58f)
                 phaseScoreUI.text = "Total Score\n" + ScoreManager.instance.score.ToString();
             else if (videoPlayer.time > 18.13f)
                 phaseScoreUI.text = "Phase 3\n" + ScoreManager.instance.phaseScore[2].ToString();

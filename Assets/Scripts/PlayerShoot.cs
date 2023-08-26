@@ -42,7 +42,8 @@ public class PlayerShoot : MonoBehaviour
 
     public List<EnemyMove> enemys = new List<EnemyMove>();
 
-
+    public Transform gunUIPos;
+    public Animator rifleUI, revolverUI;
 
 
     private void Awake()
@@ -61,6 +62,8 @@ public class PlayerShoot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        rifleUI.transform.position = gunUIPos.position;
+        revolverUI.transform.position = gunUIPos.position;
         if (ScoreManager.instance.gameOver || PhaseManager.instance.cutScenePlaying)
         {
             if (line.enabled)
@@ -145,10 +148,10 @@ public class PlayerShoot : MonoBehaviour
             }
             catch
             {
-                Debug.Log("error");
+                //Debug.Log("error");
             }
         enemys.Clear();
-
+        rifleUI.SetTrigger("shoot");
         yield return new WaitForSeconds(0.7f);
         EffectManager.instance.effectSounds[1].source.Play();
         yield return new WaitForSeconds(0.7f);
@@ -167,6 +170,7 @@ public class PlayerShoot : MonoBehaviour
         GameObject black = Instantiate(blackDot, transform.position + shootPos, Quaternion.Euler(0, 0, 0));
 
 
+        revolverUI.SetTrigger("shoot");
         yield return new WaitForSeconds(0.5f);
         Destroy(black);
 

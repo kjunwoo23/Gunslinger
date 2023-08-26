@@ -42,6 +42,11 @@ public class PhaseManager : MonoBehaviour
     public void ChangeToPhase1()
     {
         PlayerShoot.instance.StopConstantCameraShake();
+        reverse = false;
+        if (playerShoot.rifleUI.transform.localScale.x < 0)
+            playerShoot.rifleUI.transform.localScale = new Vector3(-playerShoot.rifleUI.transform.localScale.x, playerShoot.rifleUI.transform.localScale.y, playerShoot.rifleUI.transform.localScale.z);
+        var shape = player.particle.shape;
+        shape.rotation = new Vector3(0, -90, 0);
         player.transform.localScale = new Vector3(1, 1, 1);
         EnemySpawn.instance.ClearEnemy();
         playerShoot.line.enabled = true;
@@ -56,6 +61,11 @@ public class PhaseManager : MonoBehaviour
     public void ChangeToPhase2()
     {
         PlayerShoot.instance.StopConstantCameraShake();
+        reverse = false;
+        if (playerShoot.rifleUI.transform.localScale.x < 0)
+            playerShoot.rifleUI.transform.localScale = new Vector3(-playerShoot.rifleUI.transform.localScale.x, playerShoot.rifleUI.transform.localScale.y, playerShoot.rifleUI.transform.localScale.z);
+        var shape = player.particle.shape;
+        shape.rotation = new Vector3(0, -90, 0);
         player.transform.localScale = new Vector3(1, 1, 1);
         EnemySpawn.instance.ClearEnemy();
         playerShoot.line.enabled = false;
@@ -71,6 +81,10 @@ public class PhaseManager : MonoBehaviour
     {
         PlayerShoot.instance.StartConstantCameraShake(1, 0.3f);
         reverse = true;
+        if (playerShoot.rifleUI.transform.localScale.x > 0)
+            playerShoot.rifleUI.transform.localScale = new Vector3(-playerShoot.rifleUI.transform.localScale.x, playerShoot.rifleUI.transform.localScale.y, playerShoot.rifleUI.transform.localScale.z);
+        var shape = player.particle.shape;
+        shape.rotation = new Vector3(0, 90, 0);
         player.transform.localScale = new Vector3(-1, 1, 1);
         EnemySpawn.instance.ClearEnemy();
         playerShoot.line.enabled = true;

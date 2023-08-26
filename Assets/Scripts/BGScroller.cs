@@ -8,13 +8,16 @@ public class BGScroller : MonoBehaviour
     public float scrollSpeed;
     //public float minSpeed;
 
+    int dir;
+
     //Player player;
     float visionSpeed;
 
     // Start is called before the first frame update
     void Start()
     {
-        quadRenderer.sortingOrder = -500;
+        quadRenderer.sortingOrder = -1000;
+        dir = 1;
         //player = Player.instance;
     }
 
@@ -39,7 +42,9 @@ public class BGScroller : MonoBehaviour
 
         if (ScoreManager.instance.gameOver) return;
 
-        Vector2 textureOffset = new Vector2(quadRenderer.material.mainTextureOffset.x + scrollSpeed * Time.deltaTime * 0.01f, 0);
+        if (PhaseManager.instance.reverse) dir = -1;
+        else dir = 1;
+        Vector2 textureOffset = new Vector2(quadRenderer.material.mainTextureOffset.x + dir * scrollSpeed * Time.deltaTime * 0.01f, 0);
         quadRenderer.material.mainTextureOffset = textureOffset;
     }
 }

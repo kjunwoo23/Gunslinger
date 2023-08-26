@@ -26,7 +26,7 @@ public class EffectManager : MonoBehaviour
         float tmp = 0.5f;
         if (PlayerPrefs.HasKey("EffectVolume"))
         {
-            Debug.Log(PlayerPrefs.GetFloat("EffectVolume"));
+            //Debug.Log(PlayerPrefs.GetFloat("EffectVolume"));
             tmp = 0.5f;
             tmp = PlayerPrefs.GetFloat("EffectVolume");
             //slider.value = tmp;

@@ -10,6 +10,7 @@ public class TitleManager : MonoBehaviour
 {
     public VideoPlayer videoPlayer;
     public VideoPlayer videoPlayer2;
+    public VideoPlayer tutorial;
     public AudioSource startEffect;
 
     public GameObject MainMenuUI;
@@ -19,6 +20,11 @@ public class TitleManager : MonoBehaviour
     public TMP_InputField nickname;
     public TextMeshProUGUI highScore;
     public TextMeshProUGUI played;
+
+    public RawImage tutorialTex;
+    Coroutine tutorialCor;
+
+    public GameObject creditPanel;
 
 
     // Start is called before the first frame update
@@ -48,6 +54,17 @@ public class TitleManager : MonoBehaviour
     void Update()
     {
         //Debug.Log(videoPlayer.time);
+        if (Input.GetKeyDown(KeyCode.Escape))
+            if (creditPanel.activeSelf)
+                CreditOff();
+            else if (tutorial.isPlaying)
+            {
+                tutorial.Stop();
+                //tutorial.enabled = false;
+                tutorialTex.enabled = false;
+                //MainMenuUI.SetActive(true);
+                tutorialCor = null;
+            }
     }
 
     IEnumerator MenuAppear()
@@ -71,6 +88,56 @@ public class TitleManager : MonoBehaviour
         PlayerPrefs.SetString("Nickname", nickname.text);
     }
 
+    public void OnClickTutorial()
+    {
+        if (loading) return;
+        if (tutorialCor != null)
+        {
+            if (tutorial.isPlaying)
+            {
+                tutorial.Stop();
+                //tutorial.enabled = false;
+                tutorialTex.enabled = false;
+                //MainMenuUI.SetActive(true);
+                tutorialCor = null;
+            }
+            return;
+        }
+        tutorialCor = StartCoroutine(Tutorial());
+    }
+
+    IEnumerator Tutorial()
+    {
+        //MainMenuUI.SetActive(false);
+        tutorialTex.enabled = true;
+        //tutorial.enabled = true;
+        tutorial.Play();
+        yield return new WaitUntil(() => tutorial.time >= 22f);
+        yield return new WaitWhile(() => tutorial.isPlaying);
+        //tutorial.enabled = false;
+        tutorialTex.enabled = false;
+        //MainMenuUI.SetActive(true);
+        tutorialCor = null;
+    }
+
+    public void OnClickCredit()
+    {
+        if (tutorial.isPlaying)
+        {
+            tutorial.Stop();
+            //tutorial.enabled = false;
+            tutorialTex.enabled = false;
+            //MainMenuUI.SetActive(true);
+            tutorialCor = null;
+        }
+        creditPanel.SetActive(true);
+    }
+
+    public void CreditOff()
+    {
+        creditPanel.SetActive(false);
+    }
+
     public void OnClickStart()
     {
         if (loading) return;
@@ -80,10 +147,12 @@ public class TitleManager : MonoBehaviour
 
     IEnumerator LoadToIngame()
     {
+        if (tutorial.isPlaying)
+            tutorial.Stop();
         MainMenuUI.SetActive(false);
         loadingText.SetActive(true);
         videoPlayer2.Play();
-        yield return new WaitForSeconds(5);
+        yield return new WaitUntil(() => videoPlayer2.time >= 8f);
         yield return new WaitWhile(() => videoPlayer2.isPlaying);
         SceneManager.LoadScene("SampleScene");
     }
